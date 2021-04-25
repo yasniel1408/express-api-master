@@ -3,28 +3,45 @@ const controller = {};
 const Product = require('../models/Product')
 
 controller.productAll = async (req, res) => {
-	const p = await Product.find()
-    res.status(200).send({products: p});
+	const products = await Product.find()
+    res.status(200).send({products});
 };
 
 controller.productOne = async (req, res) => {
- 	const p = await Product.findById(req.params.id);
-    res.status(200).send({product: p});
+	try{
+		const product = await Product.findById(req.params.id);
+    	res.status(200).send({product});
+	}catch(err){
+		res.status(500).send({err})
+	}
+ 	
 };
 
 controller.productSave = async (req, res) => {
-    const p = new Product(req.body).save().catch(err=>console.log(err.errors.description.properties));
-    res.status(200).send({mensaje: "producto resivido"});
+	try{
+		const product = await new Product(req.body).save()
+	    res.status(200).send({product})
+	}catch(err){
+		res.status(500).send({err})
+	}
 };
 
 controller.productUpdate = async (req, res) => {
-    await Product.findByIdAndUpdate(req.params.id, req.body);
-    res.status(200).send({mensaje: "producto editado"});
+    try{
+		const product = await Product.findByIdAndUpdate(req.params.id, req.body);
+    	res.status(200).send({product});
+	}catch(err){
+		res.status(500).send({err})
+	}
 };
 
 controller.productDelete = async (req, res) => {
- 	await Product.findByIdAndRemove(req.params.id);
-    res.status(200).send({mensaje: "producto eliminado"});
+	try{
+		const product = await Product.findByIdAndRemove(req.params.id);
+  		res.status(200).send({product});
+	}catch(err){
+		res.status(500).send({err})
+	}
 };
 
 module.exports = controller;

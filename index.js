@@ -6,9 +6,10 @@ const path = require("path");
 const cors = require("cors");
 const app = express();
 require('./db/db.js');
+const config = require("./util/config")
 
 //Settings
-app.set("port", process.env.PORT || 3000);
+app.set("port", config.port);
 
 //Middelewares
 app.use(bodyParser.urlencoded({extended: false}));
@@ -25,6 +26,7 @@ app.use(
 
 //Routes
 app.use("/api/product", require("./routes/apiProducts"));
+app.use("/api/user", require("./routes/apiUser"));
 
 //Static files
 app.use(express.static(path.join(__dirname, "public")));

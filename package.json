@@ -18,9 +18,12 @@
   },
   "homepage": "https://github.com/yasniel1408/express-api-master#readme",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parse": "^0.1.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "jwt-simple": "^0.5.6",
+    "moment": "^2.29.1",
     "mongoose": "^5.12.5",
     "morgan": "^1.10.0",
     "path": "^0.12.7"

@@ -1,10 +1,8 @@
 const mongoose = require('mongoose');
-
+const config = require("../util/config")
 //No preocuparse si no has credo la base de datos 
 //Sera creada en caso de que no automáticamente
-const URI = 'mongodb://localhost/products';
-
-mongoose.connect(URI, { useUnifiedTopology: true, useNewUrlParser: true })
+mongoose.connect(config.db, { useUnifiedTopology: true, useNewUrlParser: true })
     .then(db => console.log("DB is connected"))//cuando se conecte
     .catch(err => console.error(err));
 

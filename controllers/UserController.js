@@ -1,26 +1,27 @@
 const controller = {};
 ("use strict");
-const User = require('../models/User')
-const {createToken} = require('../util/serviceJWT')
+const User = require('../models/User');
+const Login = require('../models/Login');
+const {createToken} = require('../util/serviceJWT');
 
-controller.signUp = async (req, res) => {
+controller.register = async (req, res) => {
 	try{
-		const user = new User(req.body)
-		await user.save()
-		res.status(200).send({token: createToken(user)});
+		const user = new User(req.body);
+		await user.save();
+		res.status(200).send({ok: true});
 	}catch(err){
-		res.status(500).send({err})
+		res.status(500).send({err});
 	}
 };
 
-controller.signIn = async (req, res) => {
+controller.login = async function(req, res){
 	try{
-		const user = User.find(req.body.email)
-		if(!user) res.status(404).send({err: "No existe un usuario con ese email"})
-		req.user = user
-		res.status(200).send({token: createToken(user)});
+		let login = new Login(req.body);
+		await login.validate()
+		let user = await User.findOne({ email: login.email });
+		res.status(200).send({ token: createToken(user) });
 	}catch(err){
-		res.status(500).send({err})
+		res.status(500).send({err});
 	}
 };
 

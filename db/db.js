@@ -5,5 +5,7 @@ const config = require("../util/config")
 mongoose.connect(config.db, { useUnifiedTopology: true, useNewUrlParser: true })
     .then(db => console.log("DB is connected"))//cuando se conecte
     .catch(err => console.error(err));
+mongoose.set("useCreateIndex", true);
+
 
 module.exports = mongoose;

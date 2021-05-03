@@ -2,7 +2,11 @@ const controller = {};
 ("use strict");
 const User = require('../models/User');
 const Login = require('../models/Login');
-const {createToken} = require('../util/serviceJWT');
+const {createToken, 
+		createRefreshToken, 
+		verifyRefreshToken,
+		destroyRefreshToken,
+	} = require('../util/auth');
 
 controller.register = async (req, res) => {
 	try{
@@ -17,13 +21,40 @@ controller.register = async (req, res) => {
 controller.login = async function(req, res){
 	try{
 		let login = new Login(req.body);
-		await login.validate()
+		await login.validate();
 		let user = await User.findOne({ email: login.email });
-		res.status(200).send({ token: createToken(user) });
+		res.status(200).send({ 
+			token: createToken(user),
+			refreshToken: createRefreshToken({email: login.email})
+		});
 	}catch(err){
 		res.status(500).send({err});
 	}
 };
+
+controller.refreshToken = async (req, res) => {
+  const {email, refreshToken} = req.body
+  if(verifyRefreshToken({email, refreshToken})){
+  	let user = await User.findOne({ email });
+	res.status(200).send({ 
+		token: createToken(user),
+	});
+  }else{
+  	res.status(200).send({
+		auth: false,
+		token: "",
+	});
+  }
+};
+
+controller.logout = async (req, res) => {
+  destroyRefreshToken({refreshToken: req.body.refreshToken})
+  await res.json({
+    auth: false,
+    token: "",
+  });
+};
+
 
 controller.userAll = async (req, res) => {
 	const users = await User.find()

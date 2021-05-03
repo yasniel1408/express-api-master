@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const isAuth = require('../util/auth')
+const {isAuth} = require('../util/auth')
 
 const productController = require('../controllers/ProductController');
 

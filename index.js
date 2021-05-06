@@ -24,6 +24,7 @@ app.use(
   })
 );
 
+
 //Routes
 app.use("/api/product", require("./routes/apiProducts"));
 app.use("/api/user", require("./routes/apiUser"));

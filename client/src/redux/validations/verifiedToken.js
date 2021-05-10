@@ -21,4 +21,4 @@ export const verifiedToken = async() => {
     return false;
 }
 
-export default 
+export default verifiedToken

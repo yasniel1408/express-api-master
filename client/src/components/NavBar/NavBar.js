@@ -1,17 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import './NavBar.css'
+import Login from "./Login/Login";
+import "./NavBar.css";
 
 export const NavBar = () => {
+  useEffect(() => {
+    const modal = document.querySelector(".loginForm");
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+  }, []);
+
+  const openLogin = () => {
+    document.querySelector('.loginForm').style.display='block'
+  }
+
   return (
-    <div class="navbar">
-      <Link href="/home" class="active">
+    <div className="navbar">
+      <Link to="/home" className="active">
         Home
       </Link>
-      <a href="#">About</a>
-      <a href="#">Contanct</a>
-      <a href="#" class="right">
+      <Link to="/about">About</Link>
+      <Link to="/contact">Contanct</Link>
+      <Link to="/dashboard">Dashboard</Link>
+      <a href="#" className="right" onClick={()=>{openLogin()}}>
         Login
+        <Login/>
       </a>
     </div>
   );

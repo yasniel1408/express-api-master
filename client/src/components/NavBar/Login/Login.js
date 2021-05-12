@@ -1,21 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../../Button/Button";
 import Input from "../../Input/Input";
 import "./Login.css";
 import userimg from "../../../images/img_avatar2.png";
-const Login = (props) => {
+import { useHistory } from "react-router";
+import { connect } from "react-redux";
+import { loginUser } from "../../../redux/actions/userActions";
+import Alert from "../../Alert/Alert";
 
-  const closeModal = () => {
-    const modal = document.querySelector(".loginForm");
+const Login = ({ loginUser }) => {
+  let history = useHistory();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const closeModal = async () => {
+    const modal = await document.querySelector(".loginForm");
     modal.style.display = "none";
+  };
+
+  const onLogin = async (e) => {
+    e.preventDefault();
+    const response = await loginUser({ email, password });
+    (response)? history.push("/dashboard"): history.push("/home");
   };
 
   return (
     <div id="id01" className="modal loginForm">
-      <form className="modal-content animate" method="post">
+      <form className="modal-content animate" onSubmit={onLogin}>
+        <Alert 
+          visible={true} 
+          text="HOLAAAA" 
+          serverity="error"
+          />
         <div className="imgcontainer">
           <span
-            onClick={()=>closeModal()}
+            onClick={() => closeModal()}
             className="close"
             title="Close Modal"
           >
@@ -26,11 +46,13 @@ const Login = (props) => {
 
         <div className="container">
           <Input
-            text="Username"
-            name="username"
-            type="text"
-            placeholder="Enter Username"
+            text="Email"
+            name="email"
+            type="email"
+            placeholder="Enter Email"
             required={true}
+            setValue={setEmail}
+            value={email}
           />
 
           <Input
@@ -39,18 +61,30 @@ const Login = (props) => {
             type="password"
             placeholder="Enter Password"
             required={true}
+            setValue={setPassword}
+            value={password}
           />
 
           <Button type={"submit"} text="Login" />
-          <Button
-            text="Cancel"
-            classbtn="cancelbtn"
-            onclick={closeModal}
-          />
+          <Button text="Cancel" classbtn="cancelbtn" onclick={closeModal} />
         </div>
       </form>
     </div>
   );
 };
 
-export default Login;
+const mapStateToProps = (state) => {
+  return {
+    user: state.data,
+    loading: state.loading,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loginUser: ({ email, password }) =>
+      dispatch(loginUser({ email, password })),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

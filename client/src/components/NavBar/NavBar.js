@@ -7,7 +7,7 @@ export const NavBar = () => {
   useEffect(() => {
     const modal = document.querySelector(".loginForm");
     window.onclick = function (event) {
-      if (event.target == modal) {
+      if (event.target === modal) {
         modal.style.display = "none";
       }
     };
@@ -24,11 +24,10 @@ export const NavBar = () => {
       </Link>
       <Link to="/about">About</Link>
       <Link to="/contact">Contanct</Link>
-      <Link to="/dashboard">Dashboard</Link>
-      <a href="#" className="right" onClick={()=>{openLogin()}}>
+      <div className="right btnLogin" onClick={()=>{openLogin()}}>
         Login
         <Login/>
-      </a>
+      </div>
     </div>
   );
 };

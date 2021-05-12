@@ -33,3 +33,11 @@
   background-color: #666;
   color: white;
 }
+
+.btnLogin{
+  float: right;
+  padding: 14px 20px;
+  text-decoration: none;
+  cursor: pointer;
+  color: rgb(148, 143, 143);
+}

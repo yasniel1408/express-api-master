@@ -33,34 +33,31 @@ export const loginUser = ({email, password}) => {
     return async(dispatch) => {
         dispatch(userFetch());
         const response = await useAxios({method: "post" ,url: urlLogin, data: {email, password}})
-        // if(response.data.auth === false || !response.data.token){
-        //     dispatch(userStopFetch());
-        //     return response.data.err;
-        // }
-        // localStorage.setItem('auth-token', response.data.token);
-        // let userDelToken = await verifiedToken();
-        // dispatch(userSuccess(userDelToken));
+        if(response.hasOwnProperty("err")){
+            dispatch(userStopFetch());
+            return response;
+        }
+        localStorage.setItem('auth-token', response.data.token);
+        let userDelToken = await verifiedToken();
+        dispatch(userSuccess(userDelToken));
         return true;
     }
 }
 
-// export const registerUser = ({username, password, email}) =>{
-//     return async(dispatch) => {
-//         dispatch(userFetch());
-//         const response = await Axios.post(urlRegister, {username, password, email}, {
-//             "headers":{
-//             'Content-Type': 'application/json'
-//             }
-//         })
-//         if(response.data.name === "MongoError" && response.data.keyValue.username){
-//             return `El usuario ${response.data.keyValue.username} ya existe`;
-//         }else if(response.data.name === "MongoError" && response.data.keyValue.email){
-//             return `El email ${response.data.keyValue.email} ya existe`;
-//         }
-//         dispatch(userStopFetch());
-//         return true;
-//     }
-// }
+export const registerUser = ({email, name, password}) =>{
+    return async(dispatch) => {
+        dispatch(userFetch());
+        const response = await useAxios({method: "post" ,url: urlRegister, data: {email, name, password}})
+        console.log(response)
+        // if(response.data.name === "MongoError" && response.data.keyValue.username){
+        //     return `El usuario ${response.data.keyValue.username} ya existe`;
+        // }else if(response.data.name === "MongoError" && response.data.keyValue.email){
+        //     return `El email ${response.data.keyValue.email} ya existe`;
+        // }
+        // dispatch(userStopFetch());
+        // return true;
+    }
+}
 
 // export const logoutUser = () =>{
 //     return async(dispatch) => {

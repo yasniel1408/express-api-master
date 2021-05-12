@@ -8,8 +8,11 @@ import { connect } from "react-redux";
 import { loginUser } from "../../../redux/actions/userActions";
 import Alert from "../../Alert/Alert";
 
-const Login = ({ loginUser }) => {
+const Login = ({ loginUser, loading }) => {
   let history = useHistory();
+
+  const [alert, setAlert] = useState(false);
+  const [textAlert, setTextAlert] = useState("");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,17 +25,23 @@ const Login = ({ loginUser }) => {
   const onLogin = async (e) => {
     e.preventDefault();
     const response = await loginUser({ email, password });
-    (response)? history.push("/dashboard"): history.push("/home");
+    if (response === true) {
+      history.push("/dashboard");
+    } else {
+      setAlert(true);
+      setTextAlert(response.err.message)
+    }
   };
 
   return (
-    <div id="id01" className="modal loginForm">
+    <div className="modal loginForm">
       <form className="modal-content animate" onSubmit={onLogin}>
-        <Alert 
-          visible={true} 
-          text="HOLAAAA" 
+        <Alert
+          visible={alert}
+          setAlert={setAlert}
+          text={textAlert}
           serverity="error"
-          />
+        />
         <div className="imgcontainer">
           <span
             onClick={() => closeModal()}
@@ -49,7 +58,7 @@ const Login = ({ loginUser }) => {
             text="Email"
             name="email"
             type="email"
-            placeholder="Enter Email"
+            placeholder="Enter your Email"
             required={true}
             setValue={setEmail}
             value={email}
@@ -59,13 +68,13 @@ const Login = ({ loginUser }) => {
             text="Password"
             name="password"
             type="password"
-            placeholder="Enter Password"
+            placeholder="Enter your Password"
             required={true}
             setValue={setPassword}
             value={password}
           />
 
-          <Button type={"submit"} text="Login" />
+          <Button type={"submit"} text={loading ? "Cargando..." : "Login"} />
           <Button text="Cancel" classbtn="cancelbtn" onclick={closeModal} />
         </div>
       </form>
@@ -75,8 +84,8 @@ const Login = ({ loginUser }) => {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.data,
-    loading: state.loading,
+    user: state.userReducer.userdata,
+    loading: state.userReducer.loading,
   };
 };
 

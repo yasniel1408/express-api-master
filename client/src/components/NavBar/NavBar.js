@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Login from "./Login/Login";
 import "./NavBar.css";
+import SignUp from "./SignUp/SignUp";
 
 export const NavBar = () => {
   useEffect(() => {
@@ -17,6 +18,10 @@ export const NavBar = () => {
     document.querySelector('.loginForm').style.display='block'
   }
 
+  const openSignUp = () => {
+    document.querySelector('.signUpForm').style.display='block'
+  }
+
   return (
     <div className="navbar">
       <Link to="/home" className="active">
@@ -27,6 +32,10 @@ export const NavBar = () => {
       <div className="right btnLogin" onClick={()=>{openLogin()}}>
         Login
         <Login/>
+      </div>
+      <div className="right btnLogin" onClick={()=>{openSignUp()}}>
+        SignUp
+        <SignUp/>
       </div>
     </div>
   );

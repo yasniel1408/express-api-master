@@ -7,11 +7,10 @@ const useAxios = async({ method, url, data }) => {
         url,
         data,
         validateStatus: (status) => {
-            return false;
+            return true;
         },
       })
-      console.log(response)
-      return response
+      return response.data
   } catch (error) {
       console.log(error)
   }

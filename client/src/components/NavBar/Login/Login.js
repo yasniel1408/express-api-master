@@ -20,6 +20,11 @@ const Login = ({ loginUser, loading }) => {
   const closeModal = async () => {
     const modal = await document.querySelector(".loginForm");
     modal.style.display = "none";
+    setAlert(false);
+    setTextAlert("");
+
+    setEmail("")
+    setPassword("")
   };
 
   const onLogin = async (e) => {
@@ -29,19 +34,13 @@ const Login = ({ loginUser, loading }) => {
       history.push("/dashboard");
     } else {
       setAlert(true);
-      setTextAlert(response.err.message)
+      setTextAlert(response.err.message);
     }
   };
 
   return (
     <div className="modal loginForm">
       <form className="modal-content animate" onSubmit={onLogin}>
-        <Alert
-          visible={alert}
-          setAlert={setAlert}
-          text={textAlert}
-          serverity="error"
-        />
         <div className="imgcontainer">
           <span
             onClick={() => closeModal()}
@@ -72,6 +71,13 @@ const Login = ({ loginUser, loading }) => {
             required={true}
             setValue={setPassword}
             value={password}
+          />
+
+          <Alert
+            visible={alert}
+            setAlert={setAlert}
+            text={textAlert}
+            serverity="error"
           />
 
           <Button type={"submit"} text={loading ? "Cargando..." : "Login"} />

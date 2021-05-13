@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
-import { loginUser, registerUser } from "../../../redux/actions/userActions";
+import { registerUser } from "../../../redux/actions/userActions";
 import Alert from "../../Alert/Alert";
 import Button from "../../Button/Button";
 import Input from "../../Input/Input";
 import "./SignUp.css";
 
-const SignUp = ({ loading }) => {
+const SignUp = ({ loading, registerUser }) => {
   let history = useHistory();
 
   const [alert, setAlert] = useState(false);
   const [textAlert, setTextAlert] = useState("");
+  const [serverity, setServerity] = useState("error");
 
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -21,6 +22,13 @@ const SignUp = ({ loading }) => {
   const closeModal = async () => {
     const modal = await document.querySelector(".signUpForm");
     modal.style.display = "none";
+    setAlert(false);
+    setTextAlert("");
+
+    setEmail("")
+    setName("")
+    setPassword("")
+    setRepeatPassword("")
   };
 
   const onRegister = async (e) => {
@@ -28,28 +36,36 @@ const SignUp = ({ loading }) => {
     if (password !== repeatPassword) {
       setAlert(true);
       setTextAlert("Password dont'n mached!");
+      return;
     }
     const response = await registerUser({ email, name, password });
     if (response === true) {
-      history.push("/home");
+      setAlert(true);
+      setTextAlert("Usuario registrado correctamente!");
+      setServerity("success");
+      setTimeout(() => {
+        closeModal()
+        history.push("/home");  
+      }, 2000);
     } else {
       setAlert(true);
-      setTextAlert(response.err?response.err.message:"")
+      setTextAlert(response.err ? response.err.message : "");
     }
   };
 
   return (
     <div className="signUpForm">
-      <span onClick={() => closeModal()} className="close" title="Close Modal">
-        &times;
-      </span>
       <form className="modal-content animate" onSubmit={onRegister}>
-        <Alert
-          visible={alert}
-          setAlert={setAlert}
-          text={textAlert}
-          serverity="error"
-        />
+        <div className="imgcontainer">
+          <span
+            onClick={() => closeModal()}
+            className="close"
+            title="Close Modal"
+          >
+            &times;
+          </span>
+        </div>
+
         <div className="container">
           <h1>Sign Up</h1>
           <p>Please fill in this form to create an account.</p>
@@ -95,6 +111,13 @@ const SignUp = ({ loading }) => {
             value={repeatPassword}
           />
 
+          <Alert
+            visible={alert}
+            setAlert={setAlert}
+            text={textAlert}
+            serverity={serverity}
+          />
+
           <div className="clearfix">
             <Button type={"submit"} text={loading ? "Cargando..." : "Login"} />
             <Button text="Cancel" classbtn="cancelbtn" onclick={closeModal} />
@@ -114,8 +137,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loginUser: ({ email, password }) =>
-      dispatch(loginUser({ email, password })),
+    registerUser: ({ email, name, password }) =>
+      dispatch(registerUser({ email, name, password })),
   };
 };
 

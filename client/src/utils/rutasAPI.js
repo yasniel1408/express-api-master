@@ -7,13 +7,13 @@ if(process.env.NODE_ENV === "production"){
 }
 
 const urlLogin = `${server}/user/login`;
-const urlVerifiedToken = `${server}/user/verifie-token`;
+const urlRefreshToken = `${server}/user/refresh-token`;
 const urlRegister = `${server}/user/register`;
 const urlLogout = `${server}/user/logout`;
 
 module.exports = {
     urlLogin,
-    urlVerifiedToken,
+    urlRefreshToken,
     urlRegister,
     urlLogout,
 }

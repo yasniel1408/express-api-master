@@ -1,63 +1,71 @@
-import { ActionTypes } from "."
-import {urlLogin, urlRegister, urlLogout } from '../../utils/rutasAPI'
-import verifiedToken from "../validations/verifiedToken";
-import useAxios from '../../utils/useAxios' 
+import { ActionTypes } from ".";
+import { urlLogin, urlRegister, urlLogout } from "../../utils/rutasAPI";
+import verifiedToken from "../../utils/refreshToken";
+import useAxios from "../../utils/useAxios";
+import decodeToken from "../../utils/decodeToken";
 
 export const userFetch = () => ({
-    type: ActionTypes.USER_FETCH
+  type: ActionTypes.USER_FETCH,
 });
 
-export const userSuccess = data => ({
-    type: ActionTypes.USER_SUCCESS,
-    payload: data,
+export const userSuccess = (data) => ({
+  type: ActionTypes.USER_SUCCESS,
+  payload: data,
 });
 
 export const userStopFetch = () => ({
-    type: ActionTypes.USER_STOP_FETCH
+  type: ActionTypes.USER_STOP_FETCH,
 });
 
 export const autoLoginUser = () => {
-    return async(dispatch) => {
-        await dispatch(userFetch());
-        let userDelToken = await verifiedToken();
-        if(userDelToken){
-            await dispatch(userSuccess(userDelToken));
-            return true;            
-        }else{
-            return false;
-        }
+  return async (dispatch) => {
+    await dispatch(userFetch());
+    let userDelToken = await verifiedToken();
+    if (userDelToken) {
+      await dispatch(userSuccess(userDelToken));
+      return true;
+    } else {
+      return false;
     }
-}
+  };
+};
 
-export const loginUser = ({email, password}) => {
-    return async(dispatch) => {
-        dispatch(userFetch());
-        const response = await useAxios({method: "post" ,url: urlLogin, data: {email, password}})
-        if(response.hasOwnProperty("err")){
-            dispatch(userStopFetch());
-            return response;
-        }
-        localStorage.setItem('auth-token', response.data.token);
-        let userDelToken = await verifiedToken();
-        dispatch(userSuccess(userDelToken));
-        return true;
+export const loginUser = ({ email, password }) => {
+  return async (dispatch) => {
+    dispatch(userFetch());
+    const response = await useAxios({
+      method: "post",
+      url: urlLogin,
+      data: { email, password },
+    });
+    if (response.hasOwnProperty("err")) {
+      dispatch(userStopFetch());
+      return response;
     }
-}
+    localStorage.setItem("auth-token", response.token);
+    localStorage.setItem("refresh-token", response.refreshToken);
+    let userDelToken = await decodeToken();
+    dispatch(userSuccess(userDelToken));
+    return true;
+  };
+};
 
-export const registerUser = ({email, name, password}) =>{
-    return async(dispatch) => {
-        dispatch(userFetch());
-        const response = await useAxios({method: "post" ,url: urlRegister, data: {email, name, password}})
-        console.log(response)
-        // if(response.data.name === "MongoError" && response.data.keyValue.username){
-        //     return `El usuario ${response.data.keyValue.username} ya existe`;
-        // }else if(response.data.name === "MongoError" && response.data.keyValue.email){
-        //     return `El email ${response.data.keyValue.email} ya existe`;
-        // }
-        // dispatch(userStopFetch());
-        // return true;
+export const registerUser = ({ email, name, password }) => {
+  return async (dispatch) => {
+    dispatch(userFetch());
+    const response = await useAxios({
+      method: "post",
+      url: urlRegister,
+      data: { email, name, password },
+    });
+    if (response.hasOwnProperty("err")) {
+      dispatch(userStopFetch());
+      return response;
     }
-}
+    dispatch(userStopFetch());
+    return true;
+  };
+};
 
 // export const logoutUser = () =>{
 //     return async(dispatch) => {

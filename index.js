@@ -14,7 +14,7 @@ app.set("port", config.port);
 //Middelewares
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.use(morgan("dev"));
+// app.use(morgan("dev"));
 app.use(
   cors({
     origen: "*",
@@ -23,7 +23,6 @@ app.use(
     methods: ['OPTIONS', 'GET', 'PUT', 'POST', 'DELETE'],
   })
 );
-
 
 //Routes
 app.use("/api/product", require("./routes/apiProducts"));

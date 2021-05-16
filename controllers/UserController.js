@@ -24,7 +24,7 @@ controller.login = async function(req, res){
 		await login.validate();
 		let user = await User.findOne({ email: login.email });
 		res.status(200).send({ 
-			token: createToken(user),
+			token: createToken({user}),
 			refreshToken: createRefreshToken({email: login.email})
 		});
 	}catch(err){
@@ -37,7 +37,7 @@ controller.refreshToken = async (req, res) => {
   if(verifyRefreshToken({email, refreshToken})){
   	let user = await User.findOne({ email });
 	res.status(200).send({ 
-		token: createToken(user),
+		token: createToken({user}),
 	});
   }else{
   	res.status(200).send({
@@ -54,7 +54,6 @@ controller.logout = async (req, res) => {
     token: "",
   });
 };
-
 
 controller.userAll = async (req, res) => {
 	const users = await User.find()

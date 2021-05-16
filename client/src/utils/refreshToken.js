@@ -1,26 +1,25 @@
-import {urlRefreshToken} from './rutasAPI';
-import jwt_decode from 'jwt-decode'; 
-import useAxios from './useAxios';
-import decodeToken from './decodeToken';
+import { urlRefreshToken } from "./rutasAPI";
+import decodeToken from "./decodeToken";
+import axios from "axios";
 
-export const refreshToken = async() => {
-    const token = localStorage.getItem('auth-token')
-    const refreshToken = localStorage.getItem('refresh-token')
-    const user = decodeToken()
-
-    if(token !== null && token !== ""){
-
-      let newToken = await useAxios({
-        method: "post",
-        url: urlRefreshToken,
-        data: { refreshToken, "" },
-      });
-
-      if(newToken.data.auth){
-        return jwt_decode(token)
-      }
+export const refreshToken = async () => {
+  const refreshToken = localStorage.getItem("refresh-token");
+  const res = await decodeToken();
+  if (refreshToken) {
+    let newToken = await axios({
+      method: "post",
+      url: urlRefreshToken,
+      data: { refreshToken, email: res.user.email },
+    });
+    if (newToken.data.token) {
+      localStorage.setItem("auth-token", newToken.data.token);
+      return true;
+    }else{
+      localStorage.setItem("auth-token", "");
+      localStorage.setItem("refresh-token", "");
     }
-    return false;
-}
+  }
+  return false;
+};
 
-export default refreshToken
+export default refreshToken;

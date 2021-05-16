@@ -18,20 +18,27 @@ const Login = ({ loginUser, loading }) => {
   const [password, setPassword] = useState("");
 
   const closeModal = async () => {
-    const modal = await document.querySelector(".loginForm");
-    modal.style.display = "none";
+    try {
+      const modal = await document.querySelector(".loginForm");
+      modal.style.display = "none";
+    } catch (error) {
+      // console.log(error)
+    }
+    setEmail("");
+    setPassword("");
+
     setAlert(false);
     setTextAlert("");
-
-    setEmail("")
-    setPassword("")
   };
 
   const onLogin = async (e) => {
     e.preventDefault();
     const response = await loginUser({ email, password });
     if (response === true) {
-      history.push("/dashboard");
+      closeModal();
+      setTimeout(() => {
+        history.push("/dashboard");
+      }, 1000);
     } else {
       setAlert(true);
       setTextAlert(response.err.message);

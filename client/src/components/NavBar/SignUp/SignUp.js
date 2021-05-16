@@ -130,7 +130,7 @@ const SignUp = ({ loading, registerUser }) => {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.userReducer.userdata,
+    user: state.userReducer.user,
     loading: state.userReducer.loading,
   };
 };

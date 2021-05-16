@@ -1,10 +1,14 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { NavLink, useHistory } from "react-router-dom";
+import { logoutUser } from "../../redux/actions/userActions";
 import Login from "./Login/Login";
 import "./NavBar.css";
 import SignUp from "./SignUp/SignUp";
 
-export const NavBar = () => {
+export const NavBar = ({ user, logoutUser }) => {
+  let history = useHistory();
+
   useEffect(() => {
     const modal = document.querySelector(".loginForm");
     window.onclick = function (event) {
@@ -15,30 +19,85 @@ export const NavBar = () => {
   }, []);
 
   const openLogin = () => {
-    document.querySelector('.loginForm').style.display='block'
-  }
+    document.querySelector(".loginForm").style.display = "block";
+  };
 
   const openSignUp = () => {
-    document.querySelector('.signUpForm').style.display='block'
-  }
+    document.querySelector(".signUpForm").style.display = "block";
+  };
+
+  const Logout = async () => {
+    await history.push("/");
+    await logoutUser();
+  };
 
   return (
     <div className="navbar">
-      <Link to="/home" className="active">
+      <NavLink to="/home" activeClassName="active">
         Home
-      </Link>
-      <Link to="/about">About</Link>
-      <Link to="/contact">Contanct</Link>
-      <div className="right btnLogin" onClick={()=>{openLogin()}}>
-        Login
-        <Login/>
-      </div>
-      <div className="right btnLogin" onClick={()=>{openSignUp()}}>
-        SignUp
-        <SignUp/>
-      </div>
+      </NavLink>
+      <NavLink to="/about" activeClassName="active">
+        About
+      </NavLink>
+      <NavLink to="/contact" activeClassName="active">
+        Contanct
+      </NavLink>
+      {user !== null ? (
+        <>
+          <NavLink to="/dashboard" activeClassName="active">
+            Dashboard
+          </NavLink>
+
+          <NavLink to="/product" activeClassName="active">
+            Product
+          </NavLink>
+
+          <div
+            className="right btnLogin"
+            onClick={() => {
+              Logout();
+            }}
+          >
+            Logout
+          </div>
+        </>
+      ) : (
+        <>
+          <div
+            className="right btnLogin"
+            onClick={() => {
+              openLogin();
+            }}
+          >
+            Login
+            <Login />
+          </div>
+          <div
+            className="right btnLogin"
+            onClick={() => {
+              openSignUp();
+            }}
+          >
+            SignUp
+            <SignUp />
+          </div>
+        </>
+      )}
     </div>
   );
 };
 
-export default NavBar;
+const mapStateToProps = (state) => {
+  return {
+    user: state.userReducer.user,
+    loading: state.userReducer.loading,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logoutUser: () => dispatch(logoutUser()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

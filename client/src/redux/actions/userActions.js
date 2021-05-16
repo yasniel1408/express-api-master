@@ -1,7 +1,6 @@
 import { ActionTypes } from ".";
 import { urlLogin, urlRegister, urlLogout } from "../../utils/rutasAPI";
-import verifiedToken from "../../utils/refreshToken";
-import useAxios from "../../utils/useAxios";
+import useAxios from '../../utils/UseAxios';
 import decodeToken from "../../utils/decodeToken";
 
 export const userFetch = () => ({
@@ -20,7 +19,7 @@ export const userStopFetch = () => ({
 export const autoLoginUser = () => {
   return async (dispatch) => {
     await dispatch(userFetch());
-    let userDelToken = await verifiedToken();
+    let userDelToken = await decodeToken();
     if (userDelToken) {
       await dispatch(userSuccess(userDelToken));
       return true;
@@ -67,22 +66,19 @@ export const registerUser = ({ email, name, password }) => {
   };
 };
 
-// export const logoutUser = () =>{
-//     return async(dispatch) => {
-//         dispatch(userFetch());
-//         const response = await verifiedToken();
-//         if(response === false){
-//             return `El Token no es valido`;
-//         }else{
-//             const ok = await Axios.post(urlLogout,{
-//                 "headers":{
-//                     'Authorization': localStorage.getItem('auth-token')
-//                 }
-//             })
-//             if(ok.status !== 200) return `Ha ocurrido un error al salir`;
-//             localStorage.setItem("auth-token", "")
-//         }
-//         dispatch(userStopFetch());
-//         return true;
-//     }
-// }
+export const logoutUser = () =>{
+    return async(dispatch) => {
+        dispatch(userFetch());
+        const response = await useAxios({
+          method: "post",
+          url: urlLogout,
+          data: { refreshToken: localStorage.getItem("refresh-token") },
+        });
+        if(response.auth === false){
+          localStorage.setItem("auth-token", response.token)
+          localStorage.setItem("refresh-token", response.token)
+        }
+        dispatch(userStopFetch());
+        return true;
+    }
+}

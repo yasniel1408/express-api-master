@@ -7,7 +7,7 @@ const refreshTokens = {}
 
 const createToken = ({user}) => {
   const token = jwt.sign({ user }, config.SECRET_TOKEN, {
-    expiresIn: "5m",
+    expiresIn: "1m",
   });
   return token;
 };
@@ -22,7 +22,6 @@ const verifyRefreshToken = ({email, refreshToken}) => {
   if((refreshToken in refreshTokens)&&(refreshTokens[refreshToken] === email)){
   	 return true;
   }
-  console.log(refreshTokens)
   return false;
 };
 
@@ -41,7 +40,7 @@ const isAuth = (req, res, next) => {
 	const token = req.headers.authorization.split(" ")[1];
 	jwt.verify(token, config.SECRET_TOKEN, (err, decoded) => {
 	    if (err) {
-	      return res.json({
+	      return res.status(403).json({
 	        auth: false,
 	        err
 	      });

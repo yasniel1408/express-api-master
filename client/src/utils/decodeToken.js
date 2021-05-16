@@ -1,8 +1,13 @@
 import jwt_decode from "jwt-decode";
 
 const decodeToken = async () => {
-  let token = localStorage.getItem("auth-token");
-  return await jwt_decode(token);
+  try {
+    const token = localStorage.getItem("auth-token");
+    const user = await jwt_decode(token);
+    return user;
+  } catch (error) {
+    // console.log(error)
+  }
 };
 
 export default decodeToken;

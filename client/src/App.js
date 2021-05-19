@@ -18,6 +18,7 @@ import { connect } from "react-redux";
 import { Page403 } from "./pages/Page403/Page403";
 import { autoLoginUser } from "./redux/actions/userActions";
 import { Products } from "./pages/Products/Products";
+import { Users } from "./pages/Users/Users";
 
 export function App({ user, autoLoginUser }) {
   useEffect(() => {
@@ -40,19 +41,21 @@ export function App({ user, autoLoginUser }) {
             <Route exact path="/home" render={() => <Home />} />
             <Route exact path="/about" render={() => <About />} />
             <Route exact path="/contact" render={() => <Contact />} />
-
-            {user !== null ? ( //Rutas protegidas
-              <Route exact path="/dashboard" render={() => <Dashboard />} />
-            ) : (
-              <Route exact path="/dashboard" render={() => <Page403 />} />
-            )}
-
-            {user !== null ? ( //Rutas protegidas
-              <Route exact path="/product" render={() => <Products />} />
-            ) : (
-              <Route exact path="/product" render={() => <Page403 />} />
-            )}
-
+            <Route
+              exact
+              path="/dashboard"
+              render={() => (user !== null ? <Dashboard /> : <Page403 />)}
+            />
+            <Route
+              exact
+              path="/product"
+              render={() => (user !== null ? <Products /> : <Page403 />)}
+            />
+            <Route
+              exact
+              path="/user"
+              render={() => (user !== null ? <Users /> : <Page403 />)}
+            />
             <Route component={() => <Page404 />} />
           </Switch>
         </Suspense>

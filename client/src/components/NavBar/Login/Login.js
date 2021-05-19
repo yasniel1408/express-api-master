@@ -38,7 +38,7 @@ const Login = ({ loginUser, loading }) => {
       closeModal();
       setTimeout(() => {
         history.push("/dashboard");
-      }, 1000);
+      }, 300);
     } else {
       setAlert(true);
       setTextAlert(response.err.message);

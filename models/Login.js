@@ -29,7 +29,7 @@ const LoginSchema = new Schema({
         required: [true, 'El campo password no puede estar vacio'],
         validate: {
             validator: function (v) {
-                return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,15}$/.test(v);
+                return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){6,20}$/.test(v);
             },
             message: `La contraseña debe tener de 8 a 15, debe tener minúsculas y mayúsculas!`
         },

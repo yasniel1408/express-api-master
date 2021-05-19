@@ -5,6 +5,8 @@ import { logoutUser } from "../../redux/actions/userActions";
 import Login from "./Login/Login";
 import "./NavBar.css";
 import SignUp from "./SignUp/SignUp";
+import UploadImage  from "./UploadImage/UploadImage";
+import userimg from "../../images/img_avatar2.png";
 
 export const NavBar = ({ user, logoutUser }) => {
   let history = useHistory();
@@ -31,6 +33,10 @@ export const NavBar = ({ user, logoutUser }) => {
     await logoutUser();
   };
 
+  const uploadImage = async () => {
+    document.querySelector(".uploadImageForm").style.display = "block";
+  };
+
   return (
     <div className="navbar">
       <NavLink to="/home" activeClassName="active">
@@ -52,6 +58,10 @@ export const NavBar = ({ user, logoutUser }) => {
             Product
           </NavLink>
 
+          <NavLink to="/user" activeClassName="active">
+            Users
+          </NavLink>
+
           <div
             className="right btnLogin"
             onClick={() => {
@@ -59,6 +69,18 @@ export const NavBar = ({ user, logoutUser }) => {
             }}
           >
             Logout
+          </div>
+          <div className="right imgUserDiv">
+            <UploadImage />
+            <img
+              src={userimg}
+              width={40}
+              className="imgUser"
+              onClick={() => {
+                uploadImage();
+              }}
+              alt="UserImage"
+            />
           </div>
         </>
       ) : (

@@ -8,4 +8,34 @@ body {
   margin: 0;
 }
 
+.svgBlueTeal {
+  fill: teal;
+}
 
+.svgRed {
+  fill: red;
+}
+
+/* Add Zoom Animation */
+.animate {
+  -webkit-animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s;
+}
+
+@-webkit-keyframes animatezoom {
+  from {
+    -webkit-transform: scale(0);
+  }
+  to {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes animatezoom {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

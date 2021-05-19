@@ -13,7 +13,7 @@ export const Products = () => {
   const loadTable = async () => {
     $("#table-products").dataTable().fnDestroy();
     $("#table-products").DataTable({
-      responsive: true,
+      responsive: false,
       ajax: {
         method: "GET",
         url: urlGetProductsDataTable,
@@ -56,8 +56,8 @@ export const Products = () => {
   };
 
   return (
-    <div className="contentProduct">
-      <table id="table-products" className="table table-hover">
+    <div className="contentProduct animate">
+      <table id="table-products">
         <thead>
           <tr>
             <th>Id Producto</th>
@@ -69,3 +69,4 @@ export const Products = () => {
     </div>
   );
 };
+

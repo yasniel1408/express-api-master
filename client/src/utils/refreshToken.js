@@ -15,8 +15,8 @@ export const refreshToken = async () => {
       localStorage.setItem("auth-token", newToken.data.token);
       return true;
     }else{
-      localStorage.setItem("auth-token", "");
-      localStorage.setItem("refresh-token", "");
+      // localStorage.setItem("auth-token", "");
+      // localStorage.setItem("refresh-token", "");
     }
   }
   return false;

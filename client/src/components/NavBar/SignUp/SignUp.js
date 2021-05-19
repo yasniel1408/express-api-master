@@ -46,7 +46,7 @@ const SignUp = ({ loading, registerUser }) => {
       setTimeout(() => {
         closeModal()
         history.push("/home");  
-      }, 2000);
+      }, 300);
     } else {
       setAlert(true);
       setTextAlert(response.err ? response.err.message : "");

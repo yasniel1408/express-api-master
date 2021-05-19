@@ -4,7 +4,6 @@ const Product = require("../models/Product");
 const datatablesQuery = require("datatables-query");
 
 
-
 controller.getDataTable = async (req, res) => {
     const params = req.query;
 	const query = await datatablesQuery(Product);

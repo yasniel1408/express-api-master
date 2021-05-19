@@ -1,6 +1,6 @@
 import { ActionTypes } from ".";
 import { urlLogin, urlRegister, urlLogout } from "../../utils/rutasAPI";
-import useAxios from '../../utils/UseAxios';
+import useAxios from "../../utils/UseAxios";
 import decodeToken from "../../utils/decodeToken";
 
 export const userFetch = () => ({
@@ -66,19 +66,19 @@ export const registerUser = ({ email, name, password }) => {
   };
 };
 
-export const logoutUser = () =>{
-    return async(dispatch) => {
-        dispatch(userFetch());
-        const response = await useAxios({
-          method: "post",
-          url: urlLogout,
-          data: { refreshToken: localStorage.getItem("refresh-token") },
-        });
-        if(response.auth === false){
-          localStorage.setItem("auth-token", response.token)
-          localStorage.setItem("refresh-token", response.token)
-        }
-        dispatch(userStopFetch());
-        return true;
+export const logoutUser = () => {
+  return async (dispatch) => {
+    dispatch(userFetch());
+    const response = await useAxios({
+      method: "post",
+      url: urlLogout,
+      data: { refreshToken: localStorage.getItem("refresh-token") },
+    });
+    if (response.auth === false) {
+      localStorage.setItem("auth-token", response.token);
+      localStorage.setItem("refresh-token", response.token);
     }
-}
+    dispatch(userStopFetch());
+    return true;
+  };
+};

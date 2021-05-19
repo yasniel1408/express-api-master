@@ -7,7 +7,7 @@ const refreshTokens = {}
 
 const createToken = ({user}) => {
   const token = jwt.sign({ user }, config.SECRET_TOKEN, {
-    expiresIn: "1m",
+    expiresIn: "5m",
   });
   return token;
 };

@@ -1,9 +1,9 @@
 import axios from "axios";
 import refreshToken from "./refreshToken";
 
-const useAxios = async ({ method, url, data }) => {
+const UseAxios = async ({ method, url, data }) => {
   let token = localStorage.getItem("auth-token");
-  const peticion = async() => {
+  const peticion = async () => {
     return await axios({
       method,
       url,
@@ -17,16 +17,15 @@ const useAxios = async ({ method, url, data }) => {
         return true;
       },
     });
-  }
-  const response = await peticion()
-  if(response.data.hasOwnProperty("auth")){
-    if(!response.data.auth){
-      await refreshToken()
-      await peticion()
+  };
+  const response = await peticion();
+  if (response.data.hasOwnProperty("auth")) {
+    if (!response.data.auth) {
+      await refreshToken();
+      await peticion();
     }
   }
-
   return response.data;
 };
 
-export default useAxios;
+export default UseAxios;

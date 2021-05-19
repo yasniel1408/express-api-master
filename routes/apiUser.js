@@ -9,6 +9,8 @@ router.post('/login', userController.login)
 router.post('/logout', isAuth, userController.logout)
 router.post('/refresh-token', userController.refreshToken)
 
+router.get('/data-table', isAuth, userController.getDataTable)
+router.post('/avatar/:id', isAuth, userController.changeAvatar)
 router.get('/', isAuth, userController.userAll)
 router.get('/:id', isAuth, userController.userOne)
 router.put('/:id', isAuth, userController.userUpdate)

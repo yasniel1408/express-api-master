@@ -4,8 +4,8 @@
   position: relative;
 }
 
-.avatar {
-  width: 25%;
+.avatar2 {
+  width: 55%;
   border-radius: 50%;
 }
 
@@ -19,7 +19,7 @@ span.psw {
 }
 
 /* The Modal (background) */
-.loginForm {
+.uploadImageForm {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */

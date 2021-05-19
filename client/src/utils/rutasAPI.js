@@ -10,17 +10,20 @@ const urlLogin = `${server}/user/login`;
 const urlRefreshToken = `${server}/user/refresh-token`;
 const urlRegister = `${server}/user/register`;
 const urlLogout = `${server}/user/logout`;
+const urlGetUserDataTable = `${server}/user/data-table`;
+const urlUser = `${server}/user`;
 
 
-const urlGetProducts = `${server}/product`;
+const urlProduct = `${server}/product`;
 const urlGetProductsDataTable = `${server}/product/data-table`;
-
 
 module.exports = {
     urlLogin,
     urlRefreshToken,
     urlRegister,
     urlLogout,
-    urlGetProducts,
-    urlGetProductsDataTable
+    urlProduct,
+    urlUser,
+    urlGetProductsDataTable,
+    urlGetUserDataTable
 }

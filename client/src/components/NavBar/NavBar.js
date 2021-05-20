@@ -5,20 +5,21 @@ import { logoutUser } from "../../redux/actions/userActions";
 import Login from "./Login/Login";
 import "./NavBar.css";
 import SignUp from "./SignUp/SignUp";
-import UploadImage  from "./UploadImage/UploadImage";
+import UploadImage from "./UploadImage/UploadImage";
 import userimg from "../../images/img_avatar2.png";
+import { HTTP_SERVER_DIR } from "../../utils/rutasAPI";
 
 export const NavBar = ({ user, logoutUser }) => {
   let history = useHistory();
 
-  useEffect(() => {
-    const modal = document.querySelector(".loginForm");
-    window.onclick = function (event) {
-      if (event.target === modal) {
-        modal.style.display = "none";
-      }
-    };
-  }, []);
+  // useEffect(() => {
+  //   // const modal = document.querySelector(".loginForm");
+  //   // window.onclick = function (event) {
+  //   //   if (event.target === modal) {
+  //   //     modal.style.display = "none";
+  //   //   }
+  //   // };
+  // }, [user]);
 
   const openLogin = () => {
     document.querySelector(".loginForm").style.display = "block";
@@ -73,8 +74,7 @@ export const NavBar = ({ user, logoutUser }) => {
           <div className="right imgUserDiv">
             <UploadImage />
             <img
-              src={userimg}
-              width={40}
+              src={user.avatar ? HTTP_SERVER_DIR + user.avatar : userimg}
               className="imgUser"
               onClick={() => {
                 uploadImage();

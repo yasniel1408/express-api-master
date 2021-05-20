@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 export const EditUser = ({ _id, loadTable }) => {
   const [alert, setAlert] = useState(false);
   const [textAlert, setTextAlert] = useState("");
-  const [serverity, setServerity] = useState("error");
+  const [serverity] = useState("error");
 
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");

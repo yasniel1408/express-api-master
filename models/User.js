@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const bcrypt = require("bcrypt-nodejs");
-const { text } = require("express");
 
 const UserSchema = new Schema({
   email: {

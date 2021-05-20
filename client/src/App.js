@@ -31,7 +31,7 @@ export function App({ user, autoLoginUser }) {
   return (
     <Router>
       <>
-        {user == null ? <Header /> : ""}
+        <Header />
 
         <NavBar />
 

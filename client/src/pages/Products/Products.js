@@ -8,7 +8,7 @@ require("datatables.net");
 export const Products = () => {
   useEffect(() => {
     loadTable();
-  }, []);
+  });
 
   const loadTable = async () => {
     $("#table-products").dataTable().fnDestroy();

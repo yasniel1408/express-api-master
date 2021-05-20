@@ -1,29 +1,25 @@
-let server = '';
-if(process.env.NODE_ENV === "production"){
-    server = "http://192.168.1.20:4000/api";
-    // server = "/api";
-}else{
-    server = "http://localhost:4000/api";
-}
+let HTTP_SERVER_DIR = "/";
 
-const urlLogin = `${server}/user/login`;
-const urlRefreshToken = `${server}/user/refresh-token`;
-const urlRegister = `${server}/user/register`;
-const urlLogout = `${server}/user/logout`;
-const urlGetUserDataTable = `${server}/user/data-table`;
-const urlUser = `${server}/user`;
+const urlLogin = `${HTTP_SERVER_DIR}api/user/login`;
+const urlAvatar = `${HTTP_SERVER_DIR}api/user/avatar`;
+const urlRefreshToken = `${HTTP_SERVER_DIR}api/user/refresh-token`;
+const urlRegister = `${HTTP_SERVER_DIR}api/user/register`;
+const urlLogout = `${HTTP_SERVER_DIR}api/user/logout`;
+const urlGetUserDataTable = `${HTTP_SERVER_DIR}api/user/data-table`;
+const urlUser = `${HTTP_SERVER_DIR}api/user`;
 
-
-const urlProduct = `${server}/product`;
-const urlGetProductsDataTable = `${server}/product/data-table`;
+const urlProduct = `${HTTP_SERVER_DIR}api/product`;
+const urlGetProductsDataTable = `${HTTP_SERVER_DIR}api/product/data-table`;
 
 module.exports = {
-    urlLogin,
-    urlRefreshToken,
-    urlRegister,
-    urlLogout,
-    urlProduct,
-    urlUser,
-    urlGetProductsDataTable,
-    urlGetUserDataTable
-}
+  HTTP_SERVER_DIR,
+  urlLogin,
+  urlRefreshToken,
+  urlRegister,
+  urlLogout,
+  urlProduct,
+  urlUser,
+  urlAvatar,
+  urlGetProductsDataTable,
+  urlGetUserDataTable,
+};

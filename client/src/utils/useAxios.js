@@ -9,9 +9,9 @@ const UseAxios = async ({ method, url, data }) => {
       url,
       data,
       headers: {
-        Accept: "application/json",
+        "Accept": "application/json",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
       validateStatus: (status) => {
         return true;

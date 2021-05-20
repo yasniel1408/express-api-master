@@ -9,37 +9,32 @@ const {
   destroyRefreshToken,
 } = require("../util/auth");
 const datatablesQuery = require("datatables-query");
+const uploadAvatar = require("../util/uploadAvatar");
 const multer = require("multer");
 
-var storage = multer.diskStorage({
-  destination: './public/users',
-  filename: function (req, file, cb) {
-      switch (file.mimetype) {
-          case 'image/jpeg':
-              ext = '.jpeg';
-              break;
-          case 'image/png':
-              ext = '.png';
-              break;
-      }
-      cb(null, file.originalname + ext);
-  }
-});
-
-var upload = multer({storage: storage});
-
 controller.changeAvatar = async (req, res) => {
-  const params = req.query;
-  const query = await datatablesQuery(User);
-
   try {
-    const result = await query.run(params);
-    res.status(200).send(result);
+    await uploadAvatar(req, res, async function (err) {
+      if (err instanceof multer.MulterError) {
+        // A Multer error occurred when uploading.
+        res.status(500).send({ err });
+      } else if (err) {
+        // An unknown error occurred when uploading.
+        res.status(500).send({ err });
+      }
+
+      // Everything went fine.
+      const user = await User.findByIdAndUpdate(
+        req.params.id,
+        { avatar: req.avatar ? "users/" + req.avatar : "" },
+        { new: true }
+      );
+      res.status(200).send({ file: req.file, user });
+    });
   } catch (err) {
     res.status(500).send({ err });
   }
 };
-
 
 controller.getDataTable = async (req, res) => {
   const params = req.query;

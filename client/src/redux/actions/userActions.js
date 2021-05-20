@@ -1,7 +1,13 @@
 import { ActionTypes } from ".";
-import { urlLogin, urlRegister, urlLogout } from "../../utils/rutasAPI";
+import {
+  urlLogin,
+  urlRegister,
+  urlLogout,
+  urlAvatar,
+} from "../../utils/rutasAPI";
 import useAxios from "../../utils/UseAxios";
 import decodeToken from "../../utils/decodeToken";
+import UseAxios from "../../utils/UseAxios";
 
 export const userFetch = () => ({
   type: ActionTypes.USER_FETCH,
@@ -12,20 +18,38 @@ export const userSuccess = (data) => ({
   payload: data,
 });
 
+
 export const userStopFetch = () => ({
   type: ActionTypes.USER_STOP_FETCH,
 });
 
 export const autoLoginUser = () => {
   return async (dispatch) => {
-    await dispatch(userFetch());
+    dispatch(userFetch());
     let userDelToken = await decodeToken();
     if (userDelToken) {
-      await dispatch(userSuccess(userDelToken));
+      dispatch(userSuccess(userDelToken));
       return true;
     } else {
       return false;
     }
+  };
+};
+
+export const changeAvatar = ({ formData, _id }) => {
+  return async (dispatch) => {
+    const response = await UseAxios({
+      method: "post",
+      url: `${urlAvatar}/${_id}`,
+      data: formData,
+    });
+    if (response.hasOwnProperty("err")) {
+      return response;
+    }
+    let userDelToken = await decodeToken();
+    userDelToken.user.avatar = response.user.avatar
+    dispatch(userSuccess(userDelToken));
+    return true;
   };
 };
 

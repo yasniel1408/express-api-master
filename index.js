@@ -6,7 +6,7 @@ const path = require("path");
 const cors = require("cors");
 const app = express();
 require('./db/db.js');
-const config = require("./util/config")
+const config = require("./util/config");
 
 //Settings
 app.set("port", config.port);

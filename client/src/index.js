@@ -1,7 +1,6 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import "./index.css";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
@@ -13,7 +12,9 @@ const Application = () => (
         <App />
     </Provider>
 );
- 
-ReactDOM.render(<Application />, document.getElementById('root'));
+
+// ReactDOM.render(<Application />, document.getElementById('root'));
+ReactDOM.hydrate(<Application />, document.getElementById('root'));
 
 reportWebVitals();
+

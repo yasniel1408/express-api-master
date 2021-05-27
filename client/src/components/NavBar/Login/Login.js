@@ -46,7 +46,7 @@ const Login = ({ loginUser, loading }) => {
   };
 
   return (
-    <div className="modal loginForm">
+    <div className="loginForm">
       <form className="modal-content animate" onSubmit={onLogin}>
         <div className="imgcontainer">
           <span

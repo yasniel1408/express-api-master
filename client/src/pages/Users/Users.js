@@ -128,8 +128,8 @@ export const Users = () => {
   });
 
   return (
-    <div className="contentUsers animate">
-      <table id="table-users">
+    <div className="contentUsers animate" style={{minHeight: "70vh"}}>
+      <table id="table-users" style={{width: "100%"}} className="table">
         <thead>
           <tr>
             <th>Id User</th>

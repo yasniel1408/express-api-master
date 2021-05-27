@@ -1,6 +1,7 @@
 /* Footer */
 .footer {
-    padding: 20px;
-    text-align: center;
-    background: #ddd;
-  } 
+  padding: 20px;
+  text-align: center;
+  color: aliceblue;
+  background-color: rgb(0, 19, 48);
+}

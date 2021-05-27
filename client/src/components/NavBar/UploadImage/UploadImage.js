@@ -41,6 +41,9 @@ const UploadImage = ({ user, changeAvatar }) => {
         current.src = e.target.result;
       };
       reader.readAsDataURL(file);
+      reader.onprogress = (e) =>{
+        console.log(e.total, e.loaded)
+      }
     }
   };
 

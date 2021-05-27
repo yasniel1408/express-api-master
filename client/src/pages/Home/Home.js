@@ -3,7 +3,7 @@ import "./Home.css"
 
 export function Home() {
   return (
-    <div className="row animate">
+    <div className="row animate" style={{minHeight: "70vh"}}>
       <div className="side">
         <h2>About Me</h2>
         <h5>Photo of me:</h5>

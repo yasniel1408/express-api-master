@@ -19,7 +19,7 @@ const uploadAvatar = multer({
   storage: storage,
   limits: {
     files: 1,
-    fileSize: 20 * 1024 * 1024, //2MB,
+    fileSize: 2 * 1024 * 1024, //2MB,
   }, 
   fileFilter: (req, file, cb) => {
     const filetype = /jpeg|jpg|png/;

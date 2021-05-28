@@ -8,7 +8,6 @@ const app = express();
 require("./db/db.js");
 const config = require("./util/config");
 
-
 //Settings
 app.set("port", config.port);
 
@@ -29,17 +28,14 @@ app.use(
 app.use("/api/product", require("./routes/apiProducts"));
 app.use("/api/user", require("./routes/apiUser"));
 
-
 //Static files
 app.use(express.static(path.join(__dirname, "public")));
 //Static file declaration
-// app.use(express.static(path.join(__dirname, "client/build")));
-// //build mode
-// app.use("*", (req, res) => {
-//   res.sendFile(path.join(__dirname + "/client/public/index.html"));
-// });
-
-
+app.use(express.static(path.join(__dirname, "client/build")));
+//build mode
+app.use("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/client/public/index.html"));
+});
 
 //Starting the server
 app.listen(app.get("port"), function () {

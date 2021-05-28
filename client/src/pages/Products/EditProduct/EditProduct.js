@@ -12,33 +12,33 @@ export const EditProduct = ({ _id, loadTable }) => {
   const [textAlert, setTextAlert] = useState("");
   const [serverity] = useState("error");
 
-  const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const loadUser = async () => {
+    const loadProduct = async () => {
       if (_id !== "") {
         const response = await UseAxios({
           method: "get",
           url: `${urlProduct}/${_id}`,
         });
-        setEmail(response.user.email);
-        setName(response.user.name);
+        setDescription(response.product.description);
+        setName(response.product.name);
       }
     };
-    loadUser();
+    loadProduct();
   }, [_id]);
 
   const closeModal = async () => {
-    const modal = await document.querySelector(".editUserForm");
+    const modal = await document.querySelector(".editProductForm");
     modal.style.display = "none";
     setAlert(false);
     setTextAlert("");
   };
 
-  const onEditUser = async (e) => {
+  const onEditProduct = async (e) => {
     e.preventDefault();
     setLoading(true);
     const response = await UseAxios({
@@ -46,7 +46,7 @@ export const EditProduct = ({ _id, loadTable }) => {
       url: `${urlProduct}/${_id}`,
       data: {
         name,
-        email,
+        description,
       },
     });
     if (!response.hasOwnProperty("err")) {
@@ -69,8 +69,8 @@ export const EditProduct = ({ _id, loadTable }) => {
   };
 
   return (
-    <div className="editUserForm">
-      <form className="modal-content animate" onSubmit={onEditUser}>
+    <div className="editProductForm">
+      <form className="modal-content animate" onSubmit={onEditProduct}>
         <div className="imgcontainer">
           <span
             onClick={() => closeModal()}
@@ -96,13 +96,13 @@ export const EditProduct = ({ _id, loadTable }) => {
           />
 
           <Input
-            text="Email"
-            name="email"
-            type="email"
-            placeholder="Enter your Email"
+            text="Description"
+            name="description"
+            type="text"
+            placeholder="Enter your description"
             required={true}
-            setValue={setEmail}
-            value={email}
+            setValue={setDescription}
+            value={description}
           />
 
           <Alert

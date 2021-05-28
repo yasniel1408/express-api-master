@@ -13,8 +13,8 @@ const Application = () => (
     </Provider>
 );
 
-// ReactDOM.render(<Application />, document.getElementById('root'));
-ReactDOM.hydrate(<Application />, document.getElementById('root'));
+ReactDOM.render(<Application />, document.getElementById('root'));
+// ReactDOM.hydrate(<Application />, document.getElementById('root'));
 
 reportWebVitals();
 

@@ -108,7 +108,7 @@ export const Products = () => {
   $(document).on("click", ".edit", function (event) {
     const currentId = $(this).data("id");
     set_id(currentId);
-    document.querySelector(".editUserForm").style.display = "block";
+    document.querySelector(".editProductForm").style.display = "block";
   });
 
    //ADD

@@ -5,7 +5,7 @@ const {isAuth} = require('../util/auth')
 const productController = require('../controllers/ProductController');
 
 router.get('/data-table', isAuth, productController.getDataTable)
-router.get('/', isAuth, productController.productAll)
+router.get('/', productController.productAll)
 router.get('/:id', isAuth, productController.productOne)
 router.post('/', isAuth, productController.productSave)
 router.put('/:id', isAuth, productController.productUpdate)

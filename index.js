@@ -1,10 +1,15 @@
 "use strict";
-const express = require("express");
 const bodyParser = require("body-parser");
-const morgan = require("morgan");
-const path = require("path");
-const cors = require("cors");
-const app = express();
+const express  = require('express');
+const morgan = require('morgan');
+const path = require('path')
+const app = require("express")();
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
+const cors = require('cors');
+require('./socket/socket')(io);
+
+
 require("./db/db.js");
 const config = require("./util/config");
 
@@ -38,6 +43,6 @@ app.use("*", (req, res) => {
 });
 
 //Starting the server
-app.listen(app.get("port"), function () {
+http.listen(app.get("port"), function () {
   console.log(`Server running on *:${app.get("port")}`);
 });

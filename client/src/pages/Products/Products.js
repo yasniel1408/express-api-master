@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Products.css";
+import io from "socket.io-client";
 import $ from "jquery";
 import { urlGetProductsDataTable, urlProduct } from "../../utils/rutasAPI";
 import refreshToken from "../../utils/refreshToken";
@@ -84,22 +85,32 @@ export const Products = () => {
       denyButtonText: `Cancel`,
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const _id = $(this).data("id");
-        const response = await UseAxios({
-          method: "delete",
-          url: `${urlProduct}/${_id}`,
+        Swal.fire({
+          title: "Loading...",
+          timerProgressBar: true,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+
+            const _id = $(this).data("id");
+            
+            const socket = io("/");
+            socket.emit("delete_product_id", { _id });
+            socket.on("product_deleted", async (response) => {
+              Swal.close();
+              loadTable();
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "User deleted correctly!",
+                text: "The user has been removed.",
+                showConfirmButton: false,
+                timer: 700,
+              });
+            });
+          },
+          allowOutsideClick: () => !Swal.isLoading(),
         });
-        if (!response.hasOwnProperty("err")) {
-          loadTable();
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "User deleted correctly!",
-            text: "The user has been removed.",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
       }
     });
   });
@@ -111,15 +122,15 @@ export const Products = () => {
     document.querySelector(".editProductForm").style.display = "block";
   });
 
-   //ADD
+  //ADD
   const addProduct = () => {
     document.querySelector(".addProductForm").style.display = "block";
-  }  
+  };
 
   return (
     <div className="contentProduct animate" style={{ minHeight: "70vh" }}>
-      <div style={{width: 120}}>
-        <Button text="Add Product" onclick={addProduct}/>
+      <div style={{ width: 120 }}>
+        <Button text="Add Product" onclick={addProduct} />
       </div>
       <table id="table-products">
         <thead>

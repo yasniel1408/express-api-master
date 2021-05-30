@@ -11,7 +11,7 @@ router.post("/refresh-token", userController.refreshToken);
 
 router.get("/data-table", isAuth, userController.getDataTable);
 router.post("/avatar/:id", isAuth, userController.changeAvatar);
-router.get("/", isAuth, userController.userAll);
+router.get("/", userController.userAll);
 router.get("/:id", isAuth, userController.userOne);
 router.put("/:id", isAuth, userController.userUpdate);
 router.delete("/:id", isAuth, userController.userDelete);

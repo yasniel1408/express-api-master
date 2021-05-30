@@ -1,7 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.css";
+import { Product } from "./Product";
+import { Users } from "./Users";
+
+import io from "socket.io-client";
+import UseAxios from "../../utils/UseAxios";
+import { urlProduct } from "../../utils/rutasAPI";
+import Button from "../../components/Button/Button";
+const socket = io("/");
 
 export function Home() {
+  const [products, setProducts] = useState([]);
+  const [productsNew, setProductsNew] = useState(0);
+  const [productsDeletedMessages, setProductsDeletedMessages] = useState([]);
+  let contador = 1;
+
+  useEffect(() => {
+    cargarProducts();
+
+    socket.on("new_product_created", async (response) => {
+      if (response) setProductsNew(contador++);
+    });
+
+    socket.on("product_deleted", async (response) => {
+      let list = [...productsDeletedMessages];
+      list.push(response.oldProduct)
+      setProductsDeletedMessages(list);
+      console.log(list);
+    });
+  }, [productsDeletedMessages]);
+
+  const cargarProducts = async () => {
+    const response = await UseAxios({
+      url: urlProduct,
+      method: "get",
+    });
+    setProducts(response.products.reverse());
+  };
+
+  const UploadNewProducts = () => {
+    setProductsNew([]);
+    cargarProducts();
+  };
+
+  const ReloadProducts = () => {
+    setProductsDeletedMessages([]);
+    cargarProducts();
+  };
+
   return (
     <div className="row animate" style={{ minHeight: "70vh" }}>
       <div className="side">
@@ -13,37 +59,33 @@ export function Home() {
         <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
         <h3>Users</h3>
 
-        <div className="userItem" style={{ height: 60 }}></div>
+        <Users />
 
         <br />
       </div>
-      <div className="main">
-        <h2>TITLE HEADING</h2>
-        <h5>Title description, Dec 7, 2017</h5>
-        <div className="fakeimg" style={{ height: 200 }}>
-          Image
-        </div>
-        <p>Some text..</p>
-        <p>
-          Sunt in culpa qui officia deserunt mollit anim id est laborum
-          consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-          exercitation ullamco.
-        </p>
-        <br />
-        <h2>TITLE HEADING</h2>
-        <h5>Title description, Sep 2, 2017</h5>
-        <div className="fakeimg" style={{ height: 200 }}>
-          Image
-        </div>
-        <p>Some text..</p>
-        <p>
-          Sunt in culpa qui officia deserunt mollit anim id est laborum
-          consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-          exercitation ullamco.
-        </p>
-      </div>
+      <ul className="main">
+        {productsNew > 0 ? (
+          <Button
+            text={`Upload (${productsNew}) new products now!!!`}
+            onclick={UploadNewProducts}
+          />
+        ) : (
+          ""
+        )}
+        {!!productsDeletedMessages &&
+          productsDeletedMessages.map((p) => (
+            <div>
+              <p>El producto con nombre "{p.name}" ha sido eliminado</p>
+            </div>
+          ))}
+        {productsDeletedMessages.length > 0 ? (
+          <Button text={`Reload Now!`} onclick={ReloadProducts} />
+        ) : (
+          ""
+        )}
+
+        {!!products && products.map((p) => <Product key={p._id} p={p} />)}
+      </ul>
     </div>
   );
 }

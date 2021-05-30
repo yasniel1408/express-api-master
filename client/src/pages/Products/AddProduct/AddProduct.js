@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Alert from "../../../components/Alert/Alert";
 import Button from "../../../components/Button/Button";
 import Input from "../../../components/Input/Input";
-import UseAxios from "../../../utils/UseAxios";
 import "./AddProduct.css";
-import { urlProduct } from "../../../utils/rutasAPI";
-import Swal from "sweetalert2";
+import io from "socket.io-client";
 
 export const AddProduct = ({ _id, loadTable }) => {
   const [alert, setAlert] = useState(false);
@@ -15,9 +13,7 @@ export const AddProduct = ({ _id, loadTable }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
-
   const [loading, setLoading] = useState(false);
-
 
   const closeModal = async () => {
     const modal = await document.querySelector(".addProductForm");
@@ -26,39 +22,23 @@ export const AddProduct = ({ _id, loadTable }) => {
     setTextAlert("");
   };
 
-  const onAddProduct = async (e) => {
+  const onSocketAddProduct = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const response = await UseAxios({
-      method: "post",
-      url: `${urlProduct}`,
-      data: {
-        name,
-        description,
-      },
+    const socket = io("/");
+    socket.emit("new_product_data", { name, description });
+    socket.on("new_product_created", function (response) {
+      if (response) {
+        closeModal();
+        loadTable();
+        setLoading(false);
+      }
     });
-    if (!response.hasOwnProperty("err")) {
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "User deleted correctly!",
-        text: "The user has been removed.",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      closeModal();
-      setLoading(false);
-      loadTable();
-    } else {
-      setLoading(false);
-      setAlert(true);
-      setTextAlert(response.err.message);
-    }
   };
 
   return (
     <div className="addProductForm">
-      <form className="modal-content animate" onSubmit={onAddProduct}>
+      <form className="modal-content animate" onSubmit={onSocketAddProduct}>
         <div className="imgcontainer">
           <span
             onClick={() => closeModal()}
@@ -109,4 +89,3 @@ export const AddProduct = ({ _id, loadTable }) => {
     </div>
   );
 };
-
